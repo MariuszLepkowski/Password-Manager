@@ -3,12 +3,24 @@ from tkinter import *
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
+def save_data_to_file():
+    """Saves name of website, email/username and password to a txt file."""
+    website = website_entry.get()
+    email_username= email_username_entry.get()
+    password = password_entry.get()
+    with open("data.txt", "a") as file:
+        file.write(f"{website} | {email_username} | {password}\n")
+
+def clear_data():
+    """Clears user's input from all the entries."""
+    website_entry.delete(0, 'end')
+    email_username_entry.delete(0, 'end')
+    password_entry.delete(0, 'end')
 
 # ---------------------------- UI SETUP ------------------------------- #
 def generate_password():
     print("generate password")
-def add():
-    print("add password")
+
 
 window = Tk()
 window.title("Password Manager")
@@ -36,6 +48,7 @@ password_label.grid(column=0, row=3)
 
 website_entry = Entry(width=50)
 website_entry.grid(column=1, row=1, columnspan=2)
+website_entry.focus()
 
 email_username_entry = Entry(width=50)
 email_username_entry.grid(column=1, row=2, columnspan=2)
@@ -50,7 +63,7 @@ generate_password_button = Button(text="Generate Password", width=15, command=ge
 generate_password_button.grid(column=2, row=3)
 
 
-add_button = Button(text="Add", width=42, command=add)
+add_button = Button(text="Add", width=42, command=lambda: [save_data_to_file(), clear_data()])
 add_button.grid(column=1, row=4, columnspan=2)
 
 window.mainloop()
