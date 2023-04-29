@@ -1,20 +1,52 @@
 from tkinter import *
 from tkinter import messagebox
+from random import choice, randint, shuffle
+from pyperclip import copy
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
+
+def generate_password():
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+               'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F',
+               'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+               'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+
+    nr_letters = randint(8, 10)
+    nr_symbols = randint(2, 4)
+    nr_numbers = randint(2, 4)
+
+    password_letters = [choice(letters) for _ in range(nr_letters)]
+    password_symbols = [choice(symbols) for _ in range(nr_symbols)]
+    password_numbers = [choice(numbers) for _ in range(nr_numbers)]
+
+    password_list = password_letters + password_symbols + password_numbers
+
+    shuffle(password_list)
+
+    password = "".join(password_list)
+
+    copy(password)
+
+    password_entry.insert(0, string=password)
+
 # ---------------------------- SAVE PASSWORD ------------------------------- #
+
+
 def save_data_to_file():
     """Saves name of website, email/username and password to a txt file."""
     website = website_entry.get()
-    email_username= email_username_entry.get()
+    email_username = email_username_entry.get()
     password = password_entry.get()
 
     if len(website) == 0 or len(email_username) == 0 or len(password) == 0:
         messagebox.showinfo(title="Oops", message="Please don't leave any fields empty!")
     else:
-        wants_to_save = messagebox.askokcancel(title=website, message=f"These is your user_name and password:\n{email_username}\n{password}"
-                               f"\nDo you want to save it?")
+        wants_to_save = messagebox.askokcancel(
+            title=website, message=f"These is your user_name and password:\n{email_username}\n{password}"
+            f"\nDo you want to save it?")
 
         if wants_to_save:
             with open("data.txt", "a") as file:
@@ -29,8 +61,6 @@ def clear_data():
     password_entry.delete(0, 'end')
 
 # ---------------------------- UI SETUP ------------------------------- #
-def generate_password():
-    print("generate password")
 
 
 window = Tk()
