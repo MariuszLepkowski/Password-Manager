@@ -77,22 +77,24 @@ def clear_data():
 
 def find_password():
     """Searches for email/username and password in saved data."""
+    website = website_entry.get().title()
     try:
         with open("data.json", "r") as data_file:
             data = json.load(data_file)
     except FileNotFoundError:
-        messagebox.showinfo(title="Oops", message="No data file found.")
+        messagebox.showinfo(title="Error", message="No data file found.")
     else:
         websites = []
         for key in data:
             websites.append(key.title())
-            print(websites)
-            if key == website_entry.get().title():
-                messagebox.showinfo(title=f"{key}", message=f"email/username: {data[key]['email']}"
-                                                            f"\npassword: {data[key]['password']}")
+            email_username = data[key]['email']
+            password = data[key]['password']
+            if key == website:
+                messagebox.showinfo(title=f"{key}", message=f"email/username: {email_username}"
+                                                            f"\npassword: {password}")
 
-        if website_entry.get().title() not in websites:
-            messagebox.showinfo(title="Oops", message="No details for the website in the database.")
+        if website not in websites:
+            messagebox.showinfo(title="Error", message="No details for the website in the database.")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -125,7 +127,6 @@ password_label.grid(column=0, row=3)
 website_entry = Entry(width=50)
 website_entry.grid(column=1, row=1, columnspan=2)
 website_entry.focus()
-website_entry
 
 email_username_entry = Entry(width=50)
 email_username_entry.grid(column=1, row=2, columnspan=2)
